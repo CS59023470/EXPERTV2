@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:omg/Setup/HomeV2.dart';
 import 'package:omg/Setup/SignUp.dart';
+import 'package:omg/lol.dart';
 
 import 'home.dart';
 
@@ -127,15 +128,25 @@ class _LoginPageV2State extends State<LoginPageV2> {
     );
   }
 
+//  void signIn() async {
+//    if(_formKey.currentState.validate()){
+//      _formKey.currentState.save();
+//      try{
+//        await FirebaseAuth.instance.signInWithEmailAndPassword(email: _email, password: _password);
+//        Navigator.push(context, MaterialPageRoute(builder: (context) => HomeV2()));
+
+ //     }catch(e){
+ //       print(e.message);
+ //     }
+ //   }
+//  }
+
   void signIn() async {
-//    final formState = _formKey.currentState;
     if(_formKey.currentState.validate()){
       _formKey.currentState.save();
       try{
-        await FirebaseAuth.instance.signInWithEmailAndPassword(email: _email, password: _password);
-//        FirebaseUser user = (await FirebaseAuth.instance.signInWithEmailAndPassword(email: _email, password: _password)) as FirebaseUser;
-        Navigator.push(context, MaterialPageRoute(builder: (context) => HomeV2()));
-
+        FirebaseUser user = await FirebaseAuth.instance.signInWithEmailAndPassword(email: _email, password: _password);
+        Navigator.push(context, MaterialPageRoute(builder: (context) => LOL(user: user)));
       }catch(e){
         print(e.message);
       }

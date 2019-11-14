@@ -11,6 +11,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:image/image.dart' as img;
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
+import 'package:location/location.dart';
 import 'package:path/path.dart';
 
 
@@ -43,6 +44,30 @@ class _MyAppState extends State<MyApp> {
   double _imageWidth;
   bool _busy = false;
   String _userId;
+  String longitude='nothing yet';
+  String latitude='nothing yet';
+
+  void getMyLocationData() async {
+    var currentLocation = LocationData;
+
+    var location = new Location();
+
+// Platform messages may fail, so we use a try/catch PlatformException.
+    try {
+      var location = new Location();
+      var currentLocation = await location.getLocation();
+    } on PlatformException catch (e) {
+      if (e.code == 'PERMISSION_DENIED') {
+        // error = 'Permission denied';
+      }
+      currentLocation = null;
+    }
+    location.onLocationChanged().listen((LocationData currentLocation) {
+      print(currentLocation.longitude);
+      longitude = currentLocation.longitude.toString();
+      latitude = currentLocation.latitude.toString();
+    });
+  }
 
   Future predictImagePicker() async {
     var image = await ImagePicker.pickImage(source: ImageSource.gallery);
@@ -74,13 +99,17 @@ class _MyAppState extends State<MyApp> {
         .child(_getDateNow()).set({
       'Date': _getDateNow(),
       'Url_Picture' : '$url',
-      'score' : _recognitions
+      'score' : _recognitions,
+      'lat' : '$longitude',
+      'lng' : '$latitude',
     });
     FirebaseDatabase.instance.reference().child('ExpertHistory').child(_getDateNow()).set({
       'UID' : '$_userId',
       'Date': _getDateNow(),
       'Url_Picture' : '$url',
-      'score' : _recognitions
+      'score' : _recognitions,
+      'lat' : '$longitude',
+      'lng' : '$latitude',
     });
   }
 
@@ -326,6 +355,7 @@ class _MyAppState extends State<MyApp> {
       _busy = true;
       _model = model;
       _recognitions = null;
+      this.getMyLocationData();
     });
     await loadModel();
 

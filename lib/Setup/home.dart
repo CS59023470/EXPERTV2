@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:omg/Setup/Location.dart';
 import 'package:omg/Setup/ProFile.dart';
@@ -7,6 +8,11 @@ import 'package:omg/Setup/assessment.dart';
 
 
 class Home extends StatefulWidget {
+  const Home({
+    Key key,
+    @required this.user
+  }) : super(key: key);
+  final FirebaseUser user;
   @override
   _HomeState createState() => _HomeState();
 }

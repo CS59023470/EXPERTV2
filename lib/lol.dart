@@ -7,25 +7,20 @@ import 'package:omg/Setup/SignIn.dart';
 import 'package:omg/Setup/analysis.dart';
 import 'package:omg/Setup/assessment.dart';
 
-class HomeV2 extends StatefulWidget {
-  const HomeV2({
+class LOL extends StatelessWidget {
+  const LOL({
     Key key,
     @required this.user
   }) : super(key: key);
   final FirebaseUser user;
-  @override
-  _HomeV2State createState() => _HomeV2State();
-}
-
-class _HomeV2State extends State<HomeV2> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Color(0xFFEBE4D6),
       appBar: new AppBar(
         backgroundColor: Color(0xFFEBE4D6),
-        title: new Center(child: new Text('',textAlign: TextAlign.center,style: TextStyle(fontSize: 50),)),
-           ),
+        title: new Center(child: new Text('${user.email}',textAlign: TextAlign.center,style: TextStyle(fontSize: 20),)),
+      ),
       body: new ListView(children: <Widget>[
         new Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -255,4 +250,3 @@ class Function6 extends StatelessWidget{ //class สร้างfunction
     _firebaseAuth.signOut();
   }
 }
-
